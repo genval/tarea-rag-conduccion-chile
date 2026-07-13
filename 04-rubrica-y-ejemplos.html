@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rúbrica y ejemplos · Tarea RAG — Módulo 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Hanken+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../tarea-rag-html/assets/styles.css" />
+<style>
+  /* Scoped: tabla de rúbrica + widget de auto-score */
+  .t-rub td.pt{text-align:center; color:var(--navy); font-weight:500; font-variant-numeric:tabular-nums; width:52px;}
+  .t-rub td.nn{font-family:var(--font-mono); color:var(--orange); width:34px; text-align:center;}
+  .rub-self{margin-top:22px; border:1px solid var(--line); border-radius:var(--r); padding:18px 22px; background:#fff;}
+  .rub-self .hd{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;}
+  .rub-self .hd .ti{font-family:var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);}
+  .rubric-score{display:inline-flex; align-items:baseline; gap:8px; font-family:var(--font-mono);}
+  .rubric-score .num{font-size:1.9rem; color:var(--orange); font-variant-numeric:tabular-nums;}
+  .rubric-checks{display:grid; grid-template-columns:1fr 1fr; gap:6px 26px;}
+  @media (max-width:720px){.rubric-checks{grid-template-columns:1fr}}
+  .rubric-check{display:flex; gap:9px; align-items:flex-start; cursor:pointer; font-size:.9rem; color:var(--ink-soft); line-height:1.35;}
+  .rubric-check input{margin-top:3px; accent-color:var(--orange); width:15px; height:15px; flex-shrink:0;}
+  /* tabla mini-eval de ejemplo */
+  .t-eval{font-size:.86rem}
+  .t-eval td{vertical-align:top}
+  .t-eval .yes{color:var(--ok); font-weight:500}
+  .eval-scroll{overflow-x:auto}
+</style>
+</head>
+<body class="bg-grid">
+<div class="deck-progress"></div>
+<header class="deck-top">
+  <a class="brand" href="index.html" style="text-decoration:none">FEN · UEjecutivos · <b>Tarea RAG</b></a>
+  <span class="nav-right">
+    <a class="to-hub" href="index.html"><span class="ic">☰</span> Índice</a>
+    <span class="count">1 / 6</span>
+  </span>
+</header>
+
+<main>
+  <!-- 1 · PORTADA -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">Paso 4 · La evaluación</span>
+      <h1 class="reveal">Rúbrica y ejemplos</h1>
+      <p class="lead reveal mt-m">Cómo se reparten los <span class="accent">7 puntos</span>, con ejemplos concretos de qué es una buena entrega.</p>
+    </div>
+    <div class="hint">Navega <span class="k">←</span> <span class="k">→</span></div>
+  </section>
+
+  <!-- 2 · RÚBRICA + WIDGET -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">7 puntos</span>
+      <h2 class="reveal">Cómo se evalúa</h2>
+      <div class="reveal mt-m">
+        <table class="t-clean t-rub">
+          <tr><th>#</th><th>Criterio — lo logras si…</th><th>Pts</th></tr>
+          <tr><td class="nn">1</td><td><b>Chunking justificado.</b> Eliges estrategia + tamaño + overlap y explicas <b>por qué para tu documento</b> (idealmente comparando ≥2 configs). <span class="dim">No basta con poner números "porque sí".</span></td><td class="pt">1</td></tr>
+          <tr><td class="nn">2</td><td><b>Vector store en Qdrant Cloud.</b> Embeddings + índice en <b>Qdrant Cloud</b> (no FAISS local); muestras cuántos vectores hay y un registro (id + payload + texto).</td><td class="pt">1</td></tr>
+          <tr><td class="nn">3</td><td><b>RAG básico con fuentes.</b> Respondes ≥3 preguntas usando <b>solo</b> lo recuperado y <b>citando</b> de qué chunk/sección viene cada dato.</td><td class="pt">1</td></tr>
+          <tr><td class="nn">4</td><td><b>Re-ranking con LLM.</b> Recuperas top-20 y un <b>LLM</b> puntúa la relevancia (prompt explícito → número); ordenas de mayor a menor. <span class="dim">El coseno por sí solo no cuenta.</span></td><td class="pt">1</td></tr>
+          <tr><td class="nn">5</td><td><b>Threshold + respuesta filtrada.</b> Defines un umbral, descartas lo que queda debajo y respondes <b>solo</b> con lo que pasa.</td><td class="pt">1</td></tr>
+          <tr><td class="nn">6</td><td><b>Mini-eval comparativa.</b> 3–5 preguntas propias; comparas básico <b>vs</b> re-ranked y concluyes si mejoró y por qué.</td><td class="pt">1</td></tr>
+          <tr><td class="nn">7</td><td><b>Calidad + demo.</b> Código limpio y comentado, decisiones justificadas, y una demo clara donde <b>cualquiera</b> del grupo explica.</td><td class="pt">1</td></tr>
+        </table>
+        <p class="dim" style="font-size:.9rem; margin-top:10px">El <strong>bonus</strong> (hybrid, HyDE, UI, RAGAS…) compensa puntos no logrados, tope 7. La corrección usa <code>eval-prompt-proyecto-rag.md</code> (LLM-as-judge).</p>
+
+        <div class="rub-self" id="rubricSelf">
+          <div class="hd">
+            <span class="ti">Autoevaluación — marca lo que ya cumples</span>
+            <span class="rubric-score">Tu puntaje estimado <span class="num" id="rubricNum">0</span> <span class="dim">/ 7</span></span>
+          </div>
+          <div class="rubric-checks">
+            <label class="rubric-check"><input type="checkbox" /> 1 · Chunking justificado</label>
+            <label class="rubric-check"><input type="checkbox" /> 2 · Vector store</label>
+            <label class="rubric-check"><input type="checkbox" /> 3 · RAG básico con fuentes</label>
+            <label class="rubric-check"><input type="checkbox" /> 4 · Re-ranking LLM</label>
+            <label class="rubric-check"><input type="checkbox" /> 5 · Threshold + filtrado</label>
+            <label class="rubric-check"><input type="checkbox" /> 6 · Mini-eval comparativa</label>
+            <label class="rubric-check"><input type="checkbox" /> 7 · Calidad + demo</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · EJEMPLO: JUSTIFICACIÓN DE CHUNKING -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">El criterio 1, en concreto</span>
+      <h2 class="reveal">Justificar ≠ poner un número</h2>
+      <p class="lead reveal mt-m" style="margin-bottom:6px">La misma decisión, bien y mal argumentada. Lo que evaluamos es el <span class="accent">razonamiento</span>, no el valor.</p>
+      <div class="duo mt-m reveal">
+        <div class="box good">
+          <h3 class="navy">Justificación sólida</h3>
+          <p style="font-size:.92rem; color:var(--ink-soft); margin:0">"Elegí <code>RecursiveCharacterTextSplitter</code>, 512 tokens, overlap 64. El documento son políticas con cláusulas de 2–3 párrafos; probé 256 (cortaba definiciones a la mitad) y 1024 (mezclaba dos cláusulas en un chunk). 512 mantuvo cada cláusula completa y subió la precisión en mis 5 preguntas de prueba."</p>
+        </div>
+        <div class="box warn">
+          <h3 class="navy">Justificación débil</h3>
+          <p style="font-size:.92rem; color:var(--ink-soft); margin:0">"Usé chunks de 500 con overlap 50 porque es lo típico."</p>
+          <div class="it" style="margin-top:14px"><span class="mk">✕</span><span>Sin relación con <em>este</em> documento</span></div>
+          <div class="it"><span class="mk">✕</span><span>Sin evidencia ni alternativas probadas</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · EJEMPLO: RESPONDER CON FUENTES -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">El criterio 3, en concreto</span>
+      <h2 class="reveal">Responder con fuentes ≠ responder</h2>
+      <p class="lead reveal mt-m" style="margin-bottom:6px">La respuesta debe salir <span class="accent">solo</span> del documento y decir <span class="accent">de dónde</span>.</p>
+      <div class="duo mt-m reveal">
+        <div class="box good">
+          <h3 class="navy">Con fuentes</h3>
+          <p style="font-size:.92rem; color:var(--ink-soft); margin:0">"El límite de crédito por cliente es UF 5.000 <strong>[Política de Crédito, §3.2]</strong>. Aplica a clientes con clasificación A o B <strong>[§3.4]</strong>."</p>
+          <div class="it" style="margin-top:14px"><span class="mk">✓</span><span>Cada dato trae su chunk/sección</span></div>
+          <div class="it"><span class="mk">✓</span><span>Solo afirma lo que está en el contexto</span></div>
+        </div>
+        <div class="box warn">
+          <h3 class="navy">Sin fuentes / alucinada</h3>
+          <p style="font-size:.92rem; color:var(--ink-soft); margin:0">"El límite de crédito es UF 5.000 y normalmente se revisa cada año."</p>
+          <div class="it" style="margin-top:14px"><span class="mk">✕</span><span>No cita de dónde salió</span></div>
+          <div class="it"><span class="mk">✕</span><span>"se revisa cada año" no está en el doc → inventado</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · EJEMPLO: MINI-EVAL -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">El criterio 6, en concreto</span>
+      <h2 class="reveal">Comparar básico vs re-ranked</h2>
+      <p class="lead reveal mt-m" style="margin-bottom:6px">Una tabla simple ya demuestra el punto: ¿el re-ranking mejoró la respuesta?</p>
+      <div class="eval-scroll reveal mt-m">
+        <table class="t-clean t-eval">
+          <tr><th>Pregunta</th><th>Básico</th><th>Re-ranked</th><th>¿Mejoró?</th><th>Por qué</th></tr>
+          <tr><td>¿Cuál es el límite de crédito por cliente?</td><td>Mezcla dos políticas, cifra ambigua</td><td>Cita la cláusula correcta, cifra exacta</td><td class="yes">Sí</td><td>Descartó chunks de otra sección</td></tr>
+          <tr><td>¿Qué cubre la póliza de ciberseguridad?</td><td>Respuesta genérica</td><td>Lista los 3 controles del doc</td><td class="yes">Sí</td><td>El pasaje relevante subió al top</td></tr>
+        </table>
+      </div>
+      <div class="reveal mt-m">
+        <h3 class="navy" style="margin-bottom:8px; font-size:1.15rem">Formato del set de preguntas</h3>
+        <ul class="blist">
+          <li>3–5 preguntas, cada una con su <b>respuesta esperada</b> (gold)</li>
+          <li>Mezcla de <b>factual</b> y de <b>varios pasajes</b> (multi-hop)</li>
+          <li>Idealmente una <b>sin respuesta</b> en el doc — para ver si <em>no</em> alucina</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · CÓDIGO DE REFERENCIA -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">Dónde mirar</span>
+      <h2 class="reveal">Adapten los notebooks a su documento</h2>
+      <p class="lead reveal mt-m" style="margin-bottom:6px">No parten de cero: cada paso ya está resuelto en los notebooks del curso. El trabajo es <span class="accent">llevarlo a su documento</span>.</p>
+      <div class="cards mt-m reveal" style="grid-template-columns:1fr 1fr">
+        <a class="card" href="../../clases/Notebook_01_Embeddings.ipynb"><h3>Notebook 01 — Embeddings</h3><p>Texto → vectores, similitud, dimensiones.</p><span class="dom">clases/ ↗</span></a>
+        <a class="card" href="../../clases/Notebook_02_Chunking.ipynb"><h3>Notebook 02 — Chunking</h3><p>Estrategias, tamaño y overlap.</p><span class="dom">clases/ ↗</span></a>
+        <a class="card" href="../../clases/Notebook_03_Index_&amp;_Vector_Stores.ipynb"><h3>Notebook 03 — Vector stores</h3><p>Índice, similarity search top-k.</p><span class="dom">clases/ ↗</span></a>
+        <a class="card feature" href="../../clases/Notebook_04_Retrieval_Rerank_Eval.ipynb"><span class="pin">Nivel 2</span><h3>Notebook 04 — Retrieval · Re-ranking</h3><p>El pipeline de re-ranking que evalúa la tarea.</p><span class="dom">clases/ ↗</span></a>
+      </div>
+      <div class="foot reveal">
+        <a class="btn ghost" href="03-entregables-y-plazos.html">← Entregables</a>
+        <a class="btn primary" href="index.html">Volver al índice →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="../tarea-rag-html/assets/deck.js"></script>
+<script>
+(function () {
+  var box = document.getElementById("rubricSelf");
+  var out = document.getElementById("rubricNum");
+  if (!box || !out) return;
+  var checks = Array.prototype.slice.call(box.querySelectorAll('input[type=checkbox]'));
+  function tally() {
+    var n = 0;
+    checks.forEach(function (c) { if (c.checked) n++; });
+    out.textContent = n;
+  }
+  checks.forEach(function (c) { c.addEventListener("change", tally); });
+  tally();
+})();
+</script>
+</body>
+</html>

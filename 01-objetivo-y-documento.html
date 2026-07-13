@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Objetivo y documento · Tarea RAG — Módulo 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Hanken+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../tarea-rag-html/assets/styles.css" />
+</head>
+<body class="bg-grid">
+<div class="deck-progress"></div>
+<header class="deck-top">
+  <a class="brand" href="index.html" style="text-decoration:none">FEN · UEjecutivos · <b>Tarea RAG</b></a>
+  <span class="nav-right">
+    <a class="to-hub" href="index.html"><span class="ic">☰</span> Índice</a>
+    <span class="count">1 / 4</span>
+  </span>
+</header>
+
+<main>
+  <!-- 1 · PORTADA -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">Paso 1 · La tarea</span>
+      <h1 class="reveal">Objetivo y documento</h1>
+      <p class="lead reveal mt-m">Qué van a construir y, primero, cómo eligen el <span class="accent">documento</span> sobre el que trabajará su RAG.</p>
+    </div>
+    <div class="hint">Navega <span class="k">←</span> <span class="k">→</span></div>
+  </section>
+
+  <!-- 2 · OBJETIVO -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">Qué construyen</span>
+      <h2 class="reveal">Un RAG sobre su propio documento</h2>
+      <div class="cols-2 top mt-l">
+        <div class="stack-sm reveal">
+          <p>Construyen un sistema RAG sobre <strong>un documento que eligen ustedes</strong>: dada una pregunta, recupera los pasajes relevantes y el modelo responde <strong>citando la fuente</strong>.</p>
+          <p>Luego mejoran la calidad del retrieval con <strong>re-ranking</strong> — que un LLM juzgue qué pasajes son realmente relevantes antes de responder.</p>
+          <p class="dim" style="font-size:.95rem">No es un ejercicio nuevo: es aplicar los Notebooks 01–04 a datos propios, tomando y justificando cada decisión.</p>
+        </div>
+        <div class="reveal">
+          <h3 class="navy" style="margin-bottom:12px">Van a demostrar que saben</h3>
+          <ul class="blist">
+            <li>Convertir texto en <b>embeddings</b> y hacer <b>chunking</b> con criterio (NB01–02)</li>
+            <li>Construir e indexar un <b>vector store</b> en <b>Qdrant Cloud</b> (NB03)</li>
+            <li><b>Recuperar y generar</b> una respuesta con fuentes</li>
+            <li><b>Re-rankear y filtrar</b> por relevancia con un LLM (NB04)</li>
+            <li><b>Justificar cada decisión</b> — la parte que más pesa</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · EL DOCUMENTO: CÓMO ELEGIRLO -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">La materia prima</span>
+      <h2 class="reveal">Traigan su propio documento</h2>
+      <p class="lead reveal mt-m" style="margin-bottom:6px">La gracia es que el RAG hable de algo que a ustedes les interese. Elijan un documento que cumpla estos criterios:</p>
+      <div class="cols-2 top mt-l">
+        <div class="reveal">
+          <ul class="blist">
+            <li><b>Público y compartible</b> — nada confidencial que no puedan mostrar en clase</li>
+            <li><b>Sin datos personales/sensibles</b> — se conecta con el módulo de seguridad que viene</li>
+            <li><b>Suficientemente largo</b> — ~15–60 páginas, o varios documentos, para que el chunking importe</li>
+            <li><b>Con estructura</b> — secciones, hechos, tablas: material que genere buenas preguntas</li>
+          </ul>
+          <p class="dim" style="font-size:.92rem; margin-top:14px">¿Sin ideas? Pueden usar el corpus <strong>Grupo Andes</strong> del curso como <em>fallback</em> — pero adaptándolo, no copiando los notebooks.</p>
+        </div>
+        <div class="reveal">
+          <h3 class="navy" style="margin-bottom:12px">Fuentes sugeridas</h3>
+          <div class="cards" style="grid-template-columns:1fr 1fr">
+            <div class="card"><h3>Memoria anual</h3><p>Reporte público de una empresa.</p></div>
+            <div class="card"><h3>Manual técnico</h3><p>Guía de un producto o proceso.</p></div>
+            <div class="card"><h3>Paper / informe</h3><p>Un estudio con secciones claras.</p></div>
+            <div class="card"><h3>Normativa o ley</h3><p>Reglamento, política, estándar.</p></div>
+            <div class="card"><h3>Capítulo de libro</h3><p>Texto largo y bien estructurado.</p></div>
+            <div class="card"><h3>Reporte de organismo</h3><p>Datos de un organismo público.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · BUEN vs MAL DOCUMENTO -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">Antes de decidir</span>
+      <h2 class="reveal">Un buen documento vs. uno que les complicará</h2>
+      <div class="duo mt-l reveal">
+        <div class="box good">
+          <h3 class="navy">Un buen documento</h3>
+          <div class="it"><span class="mk">✓</span><span>Tiene secciones y temas variados</span></div>
+          <div class="it"><span class="mk">✓</span><span>Permite preguntas con respuesta <em>verificable</em> en el texto</span></div>
+          <div class="it"><span class="mk">✓</span><span>Es texto real, no una tabla suelta ni puro índice</span></div>
+          <div class="it"><span class="mk">✓</span><span>Lo pueden compartir sin problemas</span></div>
+        </div>
+        <div class="box warn">
+          <h3 class="navy">Mejor eviten</h3>
+          <div class="it"><span class="mk">✕</span><span>Una sola página — el chunking no aporta nada</span></div>
+          <div class="it"><span class="mk">✕</span><span>PDF escaneado sin texto (el OCR queda fuera de alcance)</span></div>
+          <div class="it"><span class="mk">✕</span><span>Datos personales o confidenciales</span></div>
+          <div class="it"><span class="mk">✕</span><span>Algo que no puedan mostrar en la demo</span></div>
+        </div>
+      </div>
+      <div class="foot reveal">
+        <a class="btn ghost" href="index.html">← Índice</a>
+        <a class="btn primary" href="02-que-construir.html">Qué construir →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="../tarea-rag-html/assets/deck.js"></script>
+</body>
+</html>

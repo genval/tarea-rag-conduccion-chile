@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Qué construir · Tarea RAG — Módulo 03</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Hanken+Grotesk:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../tarea-rag-html/assets/styles.css" />
+<style>
+  /* Scoped: prompt dentro de la consola */
+  .prompt-body{font-size:clamp(12px,1.15vw,14px); line-height:1.85; color:#bcd0e6; white-space:pre-wrap; word-break:break-word;}
+  .prompt-body .v{color:var(--orange)}
+  .prompt-body .kw{color:#8fd0b0}
+  .lvl-tag{display:inline-block; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:999px; margin-left:10px; vertical-align:middle;}
+  .lvl-tag.core{color:var(--ok); border:1px solid var(--ok)}
+  .lvl-tag.two{color:var(--orange); border:1px solid var(--orange)}
+</style>
+</head>
+<body class="bg-grid">
+<div class="deck-progress"></div>
+<header class="deck-top">
+  <a class="brand" href="index.html" style="text-decoration:none">FEN · UEjecutivos · <b>Tarea RAG</b></a>
+  <span class="nav-right">
+    <a class="to-hub" href="index.html"><span class="ic">☰</span> Índice</a>
+    <span class="count">1 / 5</span>
+  </span>
+</header>
+
+<main>
+  <!-- 1 · PORTADA -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">Paso 2 · El sistema</span>
+      <h1 class="reveal">Qué construir</h1>
+      <p class="lead reveal mt-m">Dos niveles: un <span class="accent">núcleo</span> que asegura el cierre, y un <span class="accent">Nivel 2</span> donde están los puntos. Más bonus opcionales.</p>
+    </div>
+    <div class="hint">Navega <span class="k">←</span> <span class="k">→</span></div>
+  </section>
+
+  <!-- 2 · NÚCLEO -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">Obligatorio · asegura el cierre</span>
+      <h2 class="reveal">Núcleo <span class="lvl-tag core">todos deben llegar</span></h2>
+      <div class="cards mt-l reveal">
+        <div class="card"><span class="by">01 · NB01–02</span><h3>Ingesta + chunking justificado</h3><p>Carga el documento. Elige estrategia (fixed / recursive / por estructura / semántico) + tamaño + overlap y <strong>justifica por qué</strong> para ese tipo de doc. Ideal: prueba ≥2 configs. Conserva metadata (fuente, sección).</p></div>
+        <div class="card"><span class="by">02 · NB03</span><h3>Vector store en Qdrant Cloud</h3><p>Embeddings (<code>text-embedding-3-large</code>, 256d) → índice en <strong>Qdrant Cloud</strong> (obligatorio, no el FAISS local). Muestra cuántos vectores hay y un registro de ejemplo (id + payload + texto).</p></div>
+        <div class="card feature"><span class="pin">demo</span><span class="by">03 · NB03</span><h3>RAG básico con fuentes</h3><p>Pregunta → embed → similarity search top-k → prompt con contexto → responde <strong>solo con lo recuperado, citando</strong> la fuente. Demuéstralo en ≥3 preguntas.</p></div>
+      </div>
+      <p class="dim reveal" style="font-size:.9rem; margin-top:16px">La base vectorial <strong>debe ser Qdrant Cloud</strong> (tiene free tier) — no el fallback FAISS local. Guía de cuenta y datos: <code>docs/setup/02-qdrant-cuenta-y-datos.md</code>.</p>
+    </div>
+  </section>
+
+  <!-- 3 · NIVEL 2 -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">Aquí están los puntos</span>
+      <h2 class="reveal">Nivel 2 — re-ranking y evaluación <span class="lvl-tag two">no simple</span></h2>
+      <div class="cols-2 top mt-l">
+        <div class="reveal">
+          <ul class="blist">
+            <li><b>Re-ranking LLM-as-judge</b> — recupera top-20 → un LLM puntúa la relevancia de cada pasaje → ordena de mayor a menor → <b>filtra por threshold</b> → genera <b>solo con los que pasan</b></li>
+            <li><b>Mini-eval comparativa</b> — 3–5 preguntas propias; corre RAG básico <em>vs</em> re-ranked; tabla y conclusión: ¿mejoró?, ¿por qué?</li>
+          </ul>
+          <p class="dim" style="font-size:.92rem; margin-top:14px">Es el pipeline del Notebook 04 aplicado a tu documento — su rúbrica es <code>eval-prompt.md</code>.</p>
+        </div>
+        <div class="reveal">
+          <div class="console">
+            <div class="c-head"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="tag">score_relevancia()</span></div>
+            <div class="prompt-body">Eres un evaluador de relevancia.
+
+Pregunta: <span class="v">{pregunta}</span>
+Pasaje:   <span class="v">{chunk}</span>
+
+¿Qué tan relevante es este pasaje para
+responder la pregunta?
+Devuelve <span class="kw">SOLO</span> un número entre 0 y 1.</div>
+            <p class="foot-note">El score lo da el LLM, no el coseno. El threshold decide qué pasajes sobreviven para la respuesta final.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · BONUS -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">Opcional · suma</span>
+      <h2 class="reveal">Para los que quieran ir más lejos</h2>
+      <p class="lead reveal mt-m" style="margin-bottom:6px">Nada de esto es obligatorio. El <span class="accent">bonus</span> compensa puntos no logrados, dentro del tope de 7.</p>
+      <div class="cards mt-m reveal">
+        <div class="card"><span class="by">retrieval</span><h3>Hybrid search</h3><p>Combina denso + BM25 con RRF.</p></div>
+        <div class="card"><span class="by">query</span><h3>Multi-query / HyDE</h3><p>Reformula o inventa una respuesta hipotética para buscar mejor.</p></div>
+        <div class="card"><span class="by">query</span><h3>Query rewriting</h3><p>Reescribe la pregunta antes de recuperar.</p></div>
+        <div class="card"><span class="by">producto</span><h3>UI</h3><p>Una interfaz simple con Gradio o Streamlit.</p></div>
+        <div class="card"><span class="by">eval</span><h3>RAGAS</h3><p>Métricas automáticas de calidad del RAG.</p></div>
+        <div class="card"><span class="by">retrieval</span><h3>Filtrado por metadata</h3><p>Filtra por sección, fecha o filial antes de buscar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · RESUMEN DEL PIPELINE -->
+  <section class="panel">
+    <div class="inner">
+      <span class="eyebrow reveal">El recorrido completo</span>
+      <h2 class="reveal">Todo el pipeline, de una mirada</h2>
+      <p class="lead reveal mt-m">Del documento a la respuesta con fuentes. El Nivel 2 agrega el paso de re-ranking + threshold.</p>
+      <div class="timeline mt-l reveal">
+        <span class="yr">documento</span> <span class="arr">→</span> chunking <span class="arr">→</span> embeddings <span class="arr">→</span> vector store <span class="arr">→</span> retrieval top-k <span class="arr">→</span> <span class="now">re-ranking + threshold</span> <span class="arr">→</span> respuesta con fuentes
+      </div>
+      <div class="foot reveal">
+        <a class="btn ghost" href="01-objetivo-y-documento.html">← Objetivo</a>
+        <a class="btn primary" href="03-entregables-y-plazos.html">Entregables →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="../tarea-rag-html/assets/deck.js"></script>
+</body>
+</html>
